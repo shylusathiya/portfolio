@@ -1,44 +1,30 @@
-const html = document.documentElement;
-const canvas = document.getElementById("hero-lightpass");
-const context = canvas.getContext("2d");
+```css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-const frameCount = 240;
-// Helper to point to your specific folder and naming convention
-const currentFrame = index => (
-  `./frames/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
-);
+body {
+  background: #000;
+  overflow-x: hidden;
+}
 
-const preloadImages = () => {
-  for (let i = 1; i <= frameCount; i++) {
-    const img = new Image();
-    img.src = currentFrame(i);
-  }
-};
+/* Create vertical scroll space */
+.scroll-area {
+  height: 400vh; /* Increase for slower animation */
+}
 
-const img = new Image();
-img.src = currentFrame(1);
-canvas.width = 1920; // Adjust to your actual image width
-canvas.height = 1080; // Adjust to your actual image height
+/* Fixed canvas on screen */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: block;
+}
+```
 
-img.onload = function() {
-  context.drawImage(img, 0, 0);
-};
+---
 
-const updateImage = index => {
-  img.src = currentFrame(index);
-  context.drawImage(img, 0, 0);
-};
-
-window.addEventListener('scroll', () => {  
-  const scrollTop = html.scrollTop;
-  const maxScrollTop = html.scrollHeight - window.innerHeight;
-  const scrollFraction = scrollTop / maxScrollTop;
-  const frameIndex = Math.min(
-    frameCount - 1,
-    Math.ceil(scrollFraction * frameCount)
-  );
-  
-  requestAnimationFrame(() => updateImage(frameIndex + 1));
-});
-
-preloadImages();
